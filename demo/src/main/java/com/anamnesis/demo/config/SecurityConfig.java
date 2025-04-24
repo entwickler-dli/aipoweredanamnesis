@@ -1,6 +1,6 @@
-package com.flat.swiss.config;
+package com.anamnesis.demo.config;
 
-import com.flat.swiss.util.JwtService;
+import com.anamnesis.demo.util.JwtService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -37,11 +37,6 @@ public class SecurityConfig {
                     .requestMatchers("/user/login").permitAll()
                     .requestMatchers("/user/register").permitAll()
                     .requestMatchers("/user/**").authenticated()
-                    .requestMatchers("/flat/post").authenticated()
-                    .requestMatchers("/flat/delete/**").authenticated()
-                    .requestMatchers("/flat/update/**").authenticated()
-                    .requestMatchers("/flat/**").permitAll()
-                    .requestMatchers("/country/**").permitAll()
                     .requestMatchers("/document/**").permitAll()
                 .and()
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

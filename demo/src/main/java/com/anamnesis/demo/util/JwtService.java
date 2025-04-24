@@ -1,4 +1,4 @@
-package com.flat.swiss.util;
+package com.anamnesis.demo.util;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

@@ -1,6 +1,6 @@
-package com.flat.swiss.config;
+package com.anamnesis.demo.config;
 
-import com.flat.swiss.helper.EmailCodeHelper;
+import com.anamnesis.demo.helper.EmailCodeHelper;
 import org.openapitools.model.SupportRequestDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

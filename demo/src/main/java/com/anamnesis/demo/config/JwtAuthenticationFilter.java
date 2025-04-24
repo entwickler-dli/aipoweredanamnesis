@@ -1,6 +1,6 @@
-package com.flat.swiss.config;
+package com.anamnesis.demo.config;
 
-import com.flat.swiss.util.JwtService;
+import com.anamnesis.demo.util.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

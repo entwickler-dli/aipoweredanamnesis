@@ -1,7 +1,7 @@
-package com.flat.swiss.util;
+package com.anamnesis.demo.util;
 
-import com.flat.swiss.dao.User;
-import com.flat.swiss.repository.UserRepository;
+import com.anamnesis.demo.dao.User;
+import com.anamnesis.demo.repository.UserRepository;
 import org.openapitools.model.SignInDTO;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
