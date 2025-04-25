@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import static com.anamnesis.demo.DemoApplication.log;
+
 @Service
 public class DocumentServiceImpl implements DocumentService{
 
@@ -26,6 +28,7 @@ public class DocumentServiceImpl implements DocumentService{
 
         DocumentDTO documentDTO = mapper.toDocumentDTO(documentRepository.findByDocumentType(type).get());;
 
+        log.info("Document generated:" + documentDTO.getDocumentType());
         return ResponseEntity.ok(documentDTO);
     }
 

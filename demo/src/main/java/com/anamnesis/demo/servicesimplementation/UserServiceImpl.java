@@ -142,9 +142,11 @@ public class UserServiceImpl implements UserService {
                 return ResponseEntity.internalServerError().build();
             }
             userRepository.save(user);
+            log.info("User created:" + user.getUserId());
             return ResponseEntity.status(HttpStatus.CREATED).build();
         }
 
+        log.info("User cannot be created");
         return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Wrong email or password format");
 
     }
@@ -166,6 +168,7 @@ public class UserServiceImpl implements UserService {
             updatedUser.setUpdatedAt(sqlDate);
 
             userRepository.save(updatedUser);
+            log.info("User updated:" + updatedUser.getUserId());
             return ResponseEntity.status(HttpStatus.OK).body("User updated successfully");
         }
 
@@ -181,6 +184,8 @@ public class UserServiceImpl implements UserService {
         TokenDTO tokenDTO = new TokenDTO();
         tokenDTO.setToken(jwtToken);
         tokenDTO.setExpiry(BigDecimal.valueOf(jwtService.getExpirationTime()));
+
+        log.info("User logged in::" + jwtToken);
 
         return ResponseEntity.status(HttpStatus.OK).body(tokenDTO);
 
@@ -218,6 +223,8 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(changePasswordDTO.getNewPassword()));
         userRepository.save(user);
 
+        log.info("User updated:" + user.getUserId());
+
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
@@ -234,6 +241,7 @@ public class UserServiceImpl implements UserService {
         if (phone != null && !phone.isEmpty()){
             updatedUser.setPhone(phone);
             userRepository.save(updatedUser);
+            log.info("User updated:" + updatedUser.getUserId());
             return ResponseEntity.status(HttpStatus.OK).build();
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();

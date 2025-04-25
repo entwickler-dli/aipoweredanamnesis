@@ -20,6 +20,7 @@ public class SupportServiceImpl implements SupportService {
     public ResponseEntity<String> supportRequest(SupportRequestDTO supportRequestDTO) {
         try {
             emailSenderConfig.sendSupportRequest(supportRequestDTO);
+            log.info("Support email sent");
         } catch (Exception e) {
             log.info("Support email could not be sent");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Email cannot be sent");
