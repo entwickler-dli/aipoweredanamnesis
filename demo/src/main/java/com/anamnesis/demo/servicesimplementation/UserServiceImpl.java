@@ -1,15 +1,10 @@
 package com.anamnesis.demo.servicesimplementation;
 
 import com.anamnesis.demo.config.EmailSenderConfig;
-import com.anamnesis.demo.dao.Favorite;
-import com.anamnesis.demo.dao.Flat;
 import com.anamnesis.demo.dao.User;
 import com.anamnesis.demo.helper.EmailCodeHelper;
 import com.anamnesis.demo.helper.Mapper;
 import com.anamnesis.demo.helper.RegistrationHelper;
-import com.anamnesis.demo.repository.FavoriteRepository;
-import com.anamnesis.demo.repository.FlatRepository;
-import com.anamnesis.demo.repository.SearchRepository;
 import com.anamnesis.demo.repository.UserRepository;
 import com.anamnesis.demo.serviceinteface.UserService;
 import com.anamnesis.demo.util.AuthService;
@@ -31,7 +26,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.anamnesis.demo.SwissApplication.log;
+import static com.anamnesis.demo.DemoApplication.log;
 
 @Service
 public class UserServiceImpl implements UserService {

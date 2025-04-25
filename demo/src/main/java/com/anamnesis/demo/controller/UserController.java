@@ -25,11 +25,6 @@ public class UserController implements UserApi {
     }
 
     @Override
-    public ResponseEntity<String> changeUserSubscriptionType(Integer id, String body) {
-        return userService.changeUserSubscriptionType(id, body);
-    }
-
-    @Override
     public ResponseEntity<String> deleteUser(Integer id) {
         return userService.deleteUser(id);
     }
@@ -45,23 +40,8 @@ public class UserController implements UserApi {
     }
 
     @Override
-    public ResponseEntity<String> addFavoriteToUser(Integer userId, Integer flatId){
-         return userService.addFavoriteToUser(userId, flatId);
-    }
-
-    @Override
-    public ResponseEntity<String> removeFavoriteFromUser(Integer userId, Integer flatId){
-        return userService.removeFavoriteFromUser(userId, flatId);
-    }
-
-    @Override
     public ResponseEntity<UserListDTO> getUserList() {
         return userService.getUserList();
-    }
-
-    @Override
-    public ResponseEntity<SearchDTO> getUserLastSearch(Integer id) {
-        return userService.getUserLastSearch(id);
     }
 
     @Override

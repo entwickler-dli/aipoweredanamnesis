@@ -29,8 +29,6 @@ public class Mapper {
                 map().setEmail(source.getEmail());
                 map().setPhone(source.getPhone());
                 map().setPassword(source.getPassword());
-                map().setTypeOfUser(source.getTypeOfUser());
-                map().setSubscriptionType(source.getSubscriptionType());
             }
         });
 
@@ -43,8 +41,6 @@ public class Mapper {
                 map().setEmail(source.getEmail());
                 map().setPhone(source.getPhone());
                 map().setPassword(source.getPassword());
-                map().setTypeOfUser(source.getTypeOfUser());
-                map().setSubscriptionType(source.getSubscriptionType());
             }
         });
 

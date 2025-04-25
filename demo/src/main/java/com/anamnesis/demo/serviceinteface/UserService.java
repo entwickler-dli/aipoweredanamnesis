@@ -10,13 +10,7 @@ public interface UserService {
 
     ResponseEntity<UserListDTO> getUserList();
 
-    ResponseEntity<SearchDTO> getUserLastSearch(Integer id);
-
     ResponseEntity<UserDTO> getUserMe(TokenDTO tokenDTO);
-
-    ResponseEntity<String> addFavoriteToUser(Integer userId, Integer flatId);
-
-    ResponseEntity<String> removeFavoriteFromUser(Integer userId, Integer flatId);
 
     ResponseEntity<String> registerUser(UserDTO userDTO);
 
@@ -25,8 +19,6 @@ public interface UserService {
     ResponseEntity<TokenDTO> userLogin(SignInDTO signInDTO);
 
     ResponseEntity<String> userUpdatePassword(Integer id, ChangePasswordDTO changePasswordDTO);
-
-    ResponseEntity<String> changeUserSubscriptionType(Integer id, String body);
 
     ResponseEntity<String> updateUserPhone(Integer id, String phone);
 }

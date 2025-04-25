@@ -1,6 +1,6 @@
-package com.flat.swiss.controller;
+package com.anamnesis.demo.controller;
 
-import com.flat.swiss.serviceinteface.ValidationService;
+import com.anamnesis.demo.serviceinteface.ValidationService;
 import org.openapitools.api.ValidationApi;
 import org.openapitools.model.ForgetPasswordDTO;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,7 +1,7 @@
 package com.anamnesis.demo.servicesimplementation;
 
 import  com.anamnesis.demo.helper.Mapper;
-import com.flat.swiss.repository.DocumentRepository;
+import com.anamnesis.demo.repository.DocumentRepository;
 import  com.anamnesis.demo.serviceinteface.DocumentService;
 import org.openapitools.model.DocumentDTO;
 import org.springframework.beans.factory.annotation.Autowired;
