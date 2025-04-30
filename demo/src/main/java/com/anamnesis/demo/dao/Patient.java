@@ -19,6 +19,10 @@ public class Patient {
     @Column(name = "id")
     private Integer patientId;
 
+    @OneToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false, unique = true)
+    private User user;
+
     @Column(name = "full_name")
     private String fullName;
 
@@ -49,6 +53,14 @@ public class Patient {
 
     public void setPatientId(Integer patientId) {
         this.patientId = patientId;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getFullName() {

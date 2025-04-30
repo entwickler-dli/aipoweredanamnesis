@@ -54,9 +54,6 @@ public class User implements UserDetails {
     @Column(name = "verification_code")
     private Integer verificationCode;
 
-    @Column(name = "subscription_type")
-    private String subscriptionType;
-
     public Integer getUserId() {
         return userId;
     }
@@ -154,11 +151,4 @@ public class User implements UserDetails {
         this.verificationCode = verificationCode;
     }
 
-    public String getSubscriptionType() {
-        return subscriptionType;
-    }
-
-    public void setSubscriptionType(String subscriptionType) {
-        this.subscriptionType = subscriptionType;
-    }
 }

@@ -21,6 +21,10 @@ public class MedicalHistory {
     @Column(name = "id")
     private Integer historyId;
 
+    @OneToOne
+    @JoinColumn(name = "patient_id", referencedColumnName = "id", nullable = false, unique = true)
+    private Patient patient;
+
     @ElementCollection
     @CollectionTable(name = "chronic_conditions", joinColumns = @JoinColumn(name = "history_id"))
     @Column(name = "condition")

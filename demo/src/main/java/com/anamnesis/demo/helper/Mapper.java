@@ -9,7 +9,9 @@ import org.openapitools.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.ZoneId;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class Mapper {
@@ -54,6 +56,84 @@ public class Mapper {
             }
         });
 
+        modelMapper.typeMap(Patient.class, PatientDTO.class).addMappings(new PropertyMap<Patient, PatientDTO>() {
+            @Override
+            protected void configure() {
+                map().setPatientId(source.getPatientId());
+                map().setFullName(source.getFullName());
+                map().setDateOfBirth(source.getDateOfBirth().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+                map().setGender(source.getGender());
+                map().setAddress(source.getAddress());
+                map().setContactInformation(source.getContactInformation());
+            }
+        });
+
+        modelMapper.typeMap(Message.class, MessageDTO.class).addMappings(new PropertyMap<Message, MessageDTO>() {
+            @Override
+            protected void configure() {
+                map().setId(source.getId());
+                map().setChatroomId(source.getChatroomId());
+                map().setUserId(source.getUserId());
+                map().setMessage(source.getMessage());
+            }
+        });
+
+        modelMapper.typeMap(MessageDTO.class, Message.class).addMappings(new PropertyMap<MessageDTO, Message>() {
+            @Override
+            protected void configure() {
+                map().setId(source.getId());
+                map().setChatroomId(source.getChatroomId());
+                map().setUserId(source.getUserId());
+                map().setMessage(source.getMessage());
+                // Don't map sentAt — it's handled by @PrePersist
+            }
+        });
+
+    }
+
+    public PatientDTO mapToPatientDTO(Patient patient, MedicalHistory history) {
+        PatientDTO dto = modelMapper.map(patient, PatientDTO.class);
+
+        if (history != null) {
+            dto.setChronicConditions(history.getChronicConditions());
+            dto.setDiagnosisHistory(
+                    history.getDiagnosisHistory().stream()
+                            .map(d -> modelMapper.map(d, DiagnosisRecordDTO.class))
+                            .collect(Collectors.toList())
+            );
+            dto.setSurgicalHistory(
+                    history.getSurgicalHistory().stream()
+                            .map(s -> modelMapper.map(s, SurgicalRecordDTO.class))
+                            .collect(Collectors.toList())
+            );
+            dto.setAllergies(
+                    history.getAllergies().stream()
+                            .map(a -> modelMapper.map(a, AllergyRecordDTO.class))
+                            .collect(Collectors.toList())
+            );
+            dto.setImmunizationStatus(
+                    history.getImmunizationStatus().stream()
+                            .map(i -> modelMapper.map(i, ImmunizationRecordDTO.class))
+                            .collect(Collectors.toList())
+            );
+            dto.setVisitSummaries(
+                    history.getVisitSummaries().stream()
+                            .map(v -> modelMapper.map(v, VisitSummaryDTO.class))
+                            .collect(Collectors.toList())
+            );
+            dto.setActiveMedications(
+                    history.getActiveMedications().stream()
+                            .map(m -> modelMapper.map(m, ActiveMedicationDTO.class))
+                            .collect(Collectors.toList())
+            );
+            dto.setRecentLabResults(
+                    history.getRecentLabResults().stream()
+                            .map(l -> modelMapper.map(l, LabResultDTO.class))
+                            .collect(Collectors.toList())
+            );
+        }
+
+        return dto;
     }
 
     // Helper Methods
@@ -67,6 +147,14 @@ public class Mapper {
 
     public DocumentDTO toDocumentDTO(Document document) {
         return modelMapper.map(document, DocumentDTO.class);
+    }
+
+    public MessageDTO toMessageDTO(Message message){
+        return modelMapper.map(message, MessageDTO.class);
+    }
+
+    public Message toMessage(MessageDTO messageDTO){
+        return modelMapper.map(messageDTO, Message.class);
     }
 
 }

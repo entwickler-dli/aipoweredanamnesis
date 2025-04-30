@@ -6,6 +6,7 @@ import com.anamnesis.demo.helper.EmailCodeHelper;
 import com.anamnesis.demo.helper.Mapper;
 import com.anamnesis.demo.helper.RegistrationHelper;
 import com.anamnesis.demo.repository.UserRepository;
+import com.anamnesis.demo.serviceinteface.MedicalHistoryService;
 import com.anamnesis.demo.serviceinteface.UserService;
 import com.anamnesis.demo.util.AuthService;
 import com.anamnesis.demo.util.JwtService;
@@ -55,6 +56,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private RegistrationHelper registrationHelper;
 
+    @Autowired
+    private MedicalHistoryServiceImpl medicalHistoryService;
+
 
     @Override
     public ResponseEntity<String> deleteUser(Integer id) {
@@ -62,6 +66,7 @@ public class UserServiceImpl implements UserService {
         Optional<User> userOptional = userRepository.findById(id);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
+            medicalHistoryService.deletePatient(id);
 
             userRepository.deleteById(id);
             return ResponseEntity.status(HttpStatus.OK).build();
