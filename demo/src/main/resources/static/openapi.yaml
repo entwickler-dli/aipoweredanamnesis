@@ -1,0 +1,1315 @@
+openapi: 3.0.1
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: localhost
+    url: http://localhost:8080
+info:
+  version: "1.0.0"
+  title: ai-api
+tags:
+  - name: User
+    description: User
+  - name: Admin
+    description: Admin
+  - name: Document
+    description: All types of document like pdfs used in our app
+  - name: Validation
+    description: All types of validation that is required iin the application
+  - name: Support
+    description: Every support related methods
+  - name: Patient
+    description: stores all the Patient data like last surgeries and etc. All endpoints works with user ID
+  - name: Message
+    description: message handler from AI
+
+paths:
+  #User
+  /user/login:
+    post:
+      tags:
+        - User
+      operationId: UserLogin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignIn'
+      responses:
+        '200':
+          description: client successfully logged in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Token'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /user/register:
+    post:
+      tags:
+        - User
+      operationId: registerUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: successfully operation
+          content:
+            application/json:
+              schema:
+                type: string
+        '201':
+          description: successfully registered user
+          content:
+            application/json:
+              schema:
+                type: string
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/ConflictError'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /user:
+    get:
+      tags:
+        - User
+      operationId: getUserList
+      description: get the full list of users
+      responses:
+        '200':
+          description: successfully gave the user's list back
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserList'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /user/{id}:
+    get:
+      tags:
+        - User
+      operationId: getUserById
+      description: get a user by id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      security:
+        - bearerAuth: [ ]
+      responses:
+        '200':
+          description: successfully gave the user back
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /user/me:
+    get:
+      tags:
+        - User
+      operationId: getUserMe
+      description: get my user datas
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Token'
+      security:
+        - bearerAuth: [ ]
+      responses:
+        '200':
+          description: successfully gave the user back
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /user/update/{id}:
+    put:
+      tags:
+        - User
+      operationId: updateUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: user was successfully updated
+          content:
+            application/json:
+              schema:
+                type: string
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/ServerError'
+      security:
+        - bearerAuth: [ ]
+
+  /user/updatephone/{id}:
+    put:
+      tags:
+        - User
+      operationId: updateUserPhone
+      requestBody:
+        required: true
+        content:
+          text/plain:
+            schema:
+              type: string
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: user's phone was successfully updated
+          content:
+            application/json:
+              schema:
+                type: string
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/ServerError'
+      security:
+        - bearerAuth: [ ]
+
+  /user/changepassword/{id}:
+    put:
+      tags:
+        - User
+      operationId: userUpdatePassword
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangePassword'
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: password successfully updated
+          content:
+            application/json:
+              schema:
+                type: string
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/ServerError'
+      security:
+        - bearerAuth: [ ]
+
+  /user/delete/{id}:
+    delete:
+      tags:
+        - User
+      operationId: deleteUser
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: user was successfully deleted
+          content:
+            application/json:
+              schema:
+                type: string
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/ServerError'
+      security:
+        - bearerAuth: [ ]
+
+  #Documents
+  /document/{type}:
+    get:
+      tags:
+        - Document
+      operationId: getDocument
+      description: get the privacy Statement Document
+      parameters:
+        - name: type
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successfully gave privacy statement back
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Document'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  #Validation
+  /validation/{email}/{code}:
+    post:
+      tags:
+        - Validation
+      operationId: validateEmail
+      parameters:
+        - name: email
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: code
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: code successfully validated
+          content:
+            application/json:
+              schema:
+                type: string
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /validation/forgetpassword:
+    post:
+      tags:
+        - Validation
+      operationId: forgetPassword
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ForgetPassword'
+      responses:
+        '200':
+          description: email was sent
+          content:
+            application/json:
+              schema:
+                type: string
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /validation/forgetpasswordrequest/{email}:
+    post:
+      tags:
+        - Validation
+      operationId: forgetPasswordRequest
+      parameters:
+        - name: email
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: email was sent
+          content:
+            application/json:
+              schema:
+                type: string
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  #Support
+  /support/request:
+    post:
+      tags:
+        - Support
+      operationId: supportRequest
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SupportRequest'
+      responses:
+        '200':
+          description: support email was sent
+          content:
+            application/json:
+              schema:
+                type: string
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  #Patient
+  /patient/{id}:
+    get:
+      tags:
+        - Patient
+      operationId: getPatientById
+      description: Get a patient by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      security:
+        - bearerAuth: [ ]
+      responses:
+        '200':
+          description: Successfully retrieved patient
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Patient'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /patient/register/{userId}:
+    post:
+      tags:
+        - Patient
+      operationId: registerPatient
+      description: Register a new patient
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Patient'
+      responses:
+        '201':
+          description: Successfully registered patient
+          content:
+            application/json:
+              schema:
+                type: string
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '409':
+          $ref: '#/components/responses/ConflictError'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /patient/update/{id}:
+    put:
+      tags:
+        - Patient
+      operationId: updatePatient
+      description: Update patient by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Patient'
+      security:
+        - bearerAuth: [ ]
+      responses:
+        '200':
+          description: Successfully updated patient
+          content:
+            application/json:
+              schema:
+                type: string
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /patient/delete/{id}:
+    delete:
+      tags:
+        - Patient
+      operationId: deletePatient
+      description: Delete patient by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      security:
+        - bearerAuth: [ ]
+      responses:
+        '200':
+          description: Successfully deleted patient
+          content:
+            application/json:
+              schema:
+                type: string
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/ServerError'
+          
+  #message
+  /messages:
+    post:
+      tags:
+        - Message
+      summary: Create a new message
+      operationId: createMessage
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Message'
+      responses:
+        '201':
+          description: Message successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /messages/chatroom/{chatroomId}:
+    get:
+      tags:
+        - Message
+      summary: Get all messages by chatroom ID
+      operationId: getMessagesByChatroomId
+      parameters:
+        - name: chatroomId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Messages retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Message'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /messages/user/{userId}:
+    get:
+      tags:
+        - Message
+      summary: Get all messages by user ID
+      operationId: getMessagesByUserId
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Messages retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Message'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /messages/{id}:
+    delete:
+      tags:
+        - Message
+      summary: Delete a message by ID
+      operationId: deleteMessageById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Message deleted successfully
+          content:
+            application/json:
+              schema:
+                type: string
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+components:
+  schemas:
+    Message:
+      type: object
+      properties:
+        id:
+          type: integer
+        chatroomId:
+          type: integer
+        userId:
+          type: integer
+        message:
+          type: string
+        sentAt:
+          type: string
+          format: date-time
+
+    Token:
+      type: object
+      properties:
+        token:
+          type: string
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+        expiry:
+          type: number
+          example: 36000000
+
+    User:
+      type: object
+      description: DB schema user
+      properties:
+        userId:
+          type: integer
+          format: int32
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+        password:
+          type: string
+          format: password
+
+    UserList:
+      type: object
+      description: list of all users
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+
+    Patient:
+      type: object
+      description: DB schema for patient demographics and medical history
+      properties:
+        patientId:
+          type: integer
+          format: int32
+        fullName:
+          type: string
+        dateOfBirth:
+          type: string
+          format: date
+        gender:
+          type: string
+        address:
+          type: string
+        contactInformation:
+          type: string
+        chronicConditions:
+          type: array
+          items:
+            type: string
+        diagnosisHistory:
+          type: array
+          items:
+            $ref: '#/components/schemas/DiagnosisRecord'
+        surgicalHistory:
+          type: array
+          items:
+            $ref: '#/components/schemas/SurgicalRecord'
+        allergies:
+          type: array
+          items:
+            $ref: '#/components/schemas/AllergyRecord'
+        immunizationStatus:
+          type: array
+          items:
+            $ref: '#/components/schemas/ImmunizationRecord'
+        visitSummaries:
+          type: array
+          items:
+            $ref: '#/components/schemas/VisitSummary'
+        activeMedications:
+          type: array
+          items:
+            $ref: '#/components/schemas/ActiveMedication'
+        recentLabResults:
+          type: array
+          items:
+            $ref: '#/components/schemas/LabResult'
+
+    DiagnosisRecord:
+      type: object
+      properties:
+        condition:
+          type: string
+        diagnosisDate:
+          type: string
+          format: date
+        outcome:
+          type: string
+
+    SurgicalRecord:
+      type: object
+      properties:
+        procedure:
+          type: string
+        date:
+          type: string
+          format: date
+        notes:
+          type: string
+
+    AllergyRecord:
+      type: object
+      properties:
+        allergen:
+          type: string
+        reaction:
+          type: string
+        severity:
+          type: string
+
+    ImmunizationRecord:
+      type: object
+      properties:
+        vaccine:
+          type: string
+        date:
+          type: string
+          format: date
+
+    VisitSummary:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        reasonForVisit:
+          type: string
+        diagnosis:
+          type: string
+        treatmentSummary:
+          type: string
+        prescribedMedications:
+          type: string
+
+    ActiveMedication:
+      type: object
+      properties:
+        medicationName:
+          type: string
+        dosage:
+          type: string
+        prescribingDoctor:
+          type: string
+        startDate:
+          type: string
+          format: date
+
+    LabResult:
+      type: object
+      properties:
+        testType:
+          type: string
+        date:
+          type: string
+          format: date
+        keyFindings:
+          type: string
+        images:
+          type: string
+
+    ChangePassword:
+      type: object
+      description: change password object contains three password
+      properties:
+        userId:
+          type: integer
+          format: int32
+        oldPassword:
+          type: string
+          format: password
+        newPassword:
+          type: string
+          format: password
+        newPasswordAgain:
+          type: string
+          format: password
+
+    ForgetPassword:
+      type: object
+      description: you can use it for forget pswd
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          format: password
+        passwordConfirmation:
+          type: string
+          format: password
+
+    SignIn:
+      type: object
+      description: sign in schema user
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          format: password
+
+    SignUpUser:
+      type: object
+      description: sign up schema email plus password fields
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        phoneNumber:
+          type: string
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          format: password
+        passwordConfirmation:
+          type: string
+          format: password
+
+    VerificationCode:
+      type: object
+      description: verification code can be sent via this object (six length)
+      properties:
+        email:
+          type: string
+          format: email
+        verificationCode:
+          type: integer
+          format: int32
+          minimum: 6
+          maximum: 6
+
+    SupportRequest:
+      type: object
+      description: Format for the support page that the user fills
+      properties:
+        email:
+          type: string
+          format: email
+        subject:
+          type: string
+        details:
+          type: string
+
+    Document:
+      type: object
+      description: Document
+      properties:
+        description:
+          type: string
+        documentType:
+          type: string
+        lastUpdated:
+          type: string
+          format: date
+
+    ClientErrorResponse:
+      properties:
+        error:
+          $ref: '#/components/schemas/ClientError'
+      type: object
+      example:
+        error:
+          message: 'Authorization information (Header: %s) is missing or invalid.'
+
+    ConflictErrorResponse:
+      properties:
+        error:
+          $ref: '#/components/schemas/ConflictError'
+      type: object
+      example:
+        error:
+          message: 'Conflict Error'
+
+    ServerErrorResponse:
+      properties:
+        error:
+          $ref: '#/components/schemas/ServerError'
+      type: object
+      example:
+        error:
+          message: 'Internal Server Error.'
+          trace_id: 66
+
+    SubscriptionErrorResponse:
+      properties:
+        error:
+          $ref: '#/components/schemas/ClientError'
+      type: object
+      example:
+        error:
+          message: 'You do not have subscription for this operation'
+
+    TooManyRequestsResponse:
+      properties:
+        error:
+          $ref: '#/components/schemas/ClientError'
+      type: object
+      example:
+        error:
+          message: 'Too many requests'
+
+    ValidationErrorResponse:
+      properties:
+        message:
+          type: string
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationError'
+      type: object
+
+    ClientError:
+      properties:
+        message:
+          type: string
+      type: object
+    ConflictError:
+      properties:
+        message:
+          type: string
+      type: object
+
+    ServerError:
+      properties:
+        message:
+          type: string
+        trace_id:
+          description: 'You should send us this ID to investigate the issue.'
+          type: string
+      type: object
+
+    ValidationError:
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+      type: object
+
+  responses:
+    BadRequest:
+      description: 'The request is malformed.'
+      headers:
+        X-RateLimit-Limit:
+          description: 'Request limit per minute.'
+          schema:
+            type: integer
+            format: int32
+        X-RateLimit-Remaining:
+          description: 'The number of requests left for the time window.'
+          schema:
+            type: integer
+            format: int32
+        X-RateLimit-Reset:
+          description: 'The timestamp at which the current rate limit window resets.'
+          schema:
+            type: integer
+            format: int32
+        Retry-After:
+          description: 'How many seconds you have to wait before making new request.'
+          schema:
+            type: integer
+            format: int32
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ClientErrorResponse'
+    Unauthorized:
+      description: 'Authorization information is missing or invalid.'
+      headers:
+        X-RateLimit-Limit:
+          description: 'Request limit per minute.'
+          schema:
+            type: integer
+            format: int32
+        X-RateLimit-Remaining:
+          description: 'The number of requests left for the time window.'
+          schema:
+            type: integer
+            format: int32
+        X-RateLimit-Reset:
+          description: 'The timestamp at which the current rate limit window resets.'
+          schema:
+            type: integer
+            format: int32
+        Retry-After:
+          description: 'How many seconds you have to wait before making new request.'
+          schema:
+            type: integer
+            format: int32
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ClientErrorResponse'
+    Forbidden:
+      description: 'Authenticated user doesn''t have access to the resource.'
+      headers:
+        X-RateLimit-Limit:
+          description: 'Request limit per minute.'
+          schema:
+            type: integer
+            format: int32
+        X-RateLimit-Remaining:
+          description: 'The number of requests left for the time window.'
+          schema:
+            type: integer
+            format: int32
+        X-RateLimit-Reset:
+          description: 'The timestamp at which the current rate limit window resets.'
+          schema:
+            type: integer
+            format: int32
+        Retry-After:
+          description: 'How many seconds you have to wait before making new request.'
+          schema:
+            type: integer
+            format: int32
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ClientErrorResponse'
+    NotFound:
+      description: 'Non-existent resource is requested.'
+      headers:
+        X-RateLimit-Limit:
+          description: 'Request limit per minute.'
+          schema:
+            type: integer
+            format: int32
+        X-RateLimit-Remaining:
+          description: 'The number of requests left for the time window.'
+          schema:
+            type: integer
+            format: int32
+        X-RateLimit-Reset:
+          description: 'The timestamp at which the current rate limit window resets.'
+          schema:
+            type: integer
+            format: int32
+        Retry-After:
+          description: 'How many seconds you have to wait before making new request.'
+          schema:
+            type: integer
+            format: int32
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ClientErrorResponse'
+    ConflictError:
+      description: 'Conflict error'
+      headers:
+        X-RateLimit-Limit:
+          description: 'Request limit per minute.'
+          schema:
+            type: integer
+            format: int32
+        X-RateLimit-Remaining:
+          description: 'The number of requests left for the time window.'
+          schema:
+            type: integer
+            format: int32
+        X-RateLimit-Reset:
+          description: 'The timestamp at which the current rate limit window resets.'
+          schema:
+            type: integer
+            format: int32
+        Retry-After:
+          description: 'How many seconds you have to wait before making new request.'
+          schema:
+            type: integer
+            format: int32
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ConflictErrorResponse'
+    UnprocessableEntity:
+      description: 'Validation errors occured.'
+      headers:
+        X-RateLimit-Limit:
+          description: 'Request limit per minute.'
+          schema:
+            type: integer
+            format: int32
+        X-RateLimit-Remaining:
+          description: 'The number of requests left for the time window.'
+          schema:
+            type: integer
+            format: int32
+        X-RateLimit-Reset:
+          description: 'The timestamp at which the current rate limit window resets.'
+          schema:
+            type: integer
+            format: int32
+        Retry-After:
+          description: 'How many seconds you have to wait before making new request.'
+          schema:
+            type: integer
+            format: int32
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ValidationErrorResponse'
+    ServerError:
+      description: 'Internal server error.'
+      headers:
+        X-RateLimit-Limit:
+          description: 'Request limit per minute.'
+          schema:
+            type: integer
+            format: int32
+        X-RateLimit-Remaining:
+          description: 'The number of requests left for the time window.'
+          schema:
+            type: integer
+            format: int32
+        X-RateLimit-Reset:
+          description: 'The timestamp at which the current rate limit window resets.'
+          schema:
+            type: integer
+            format: int32
+        Retry-After:
+          description: 'How many seconds you have to wait before making new request.'
+          schema:
+            type: integer
+            format: int32
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ServerErrorResponse'
+    TooManyRequests:
+      description: 'Too many requests'
+      headers:
+        X-RateLimit-Limit:
+          description: 'Request limit per minute.'
+          schema:
+            type: integer
+            format: int32
+        X-RateLimit-Remaining:
+          description: 'The number of requests left for the time window.'
+          schema:
+            type: integer
+            format: int32
+        X-RateLimit-Reset:
+          description: 'The timestamp at which the current rate limit window resets.'
+          schema:
+            type: integer
+            format: int32
+        Retry-After:
+          description: 'How many seconds you have to wait before making new request.'
+          schema:
+            type: integer
+            format: int32
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TooManyRequestsResponse'
+    PaymentRequired:
+      description: 'Authenticated user doesn''t have subscription.'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SubscriptionErrorResponse'
+
+  securitySchemes:
+    bearerAuth: # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT    # optional, arbitrary value for documentation purposes
