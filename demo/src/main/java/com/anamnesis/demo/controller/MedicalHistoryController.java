@@ -20,16 +20,16 @@ public class MedicalHistoryController implements PatientApi {
 
     @Override
     public ResponseEntity<PatientDTO> getPatientById(Integer id) {
-        return null;
+        return medicalHistoryService.getPatientById(id);
     }
 
     @Override
     public ResponseEntity<String> registerPatient(Integer userId, PatientDTO patientDTO) {
-        return null;
+        return medicalHistoryService.registerPatient(userId, patientDTO);
     }
 
     @Override
     public ResponseEntity<String> updatePatient(Integer id, PatientDTO patientDTO) {
-        return null;
+        return medicalHistoryService.updatePatient(id, patientDTO);
     }
 }
